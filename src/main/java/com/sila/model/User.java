@@ -2,18 +2,13 @@ package com.sila.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sila.dto.RestaurantDto;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -28,11 +23,12 @@ public class User {
   private String password;
   private USER_ROLE role;
   @JsonIgnore
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL,mappedBy ="customer")
   private List<Order> orders=new ArrayList<>();
   @ElementCollection
   private List<RestaurantDto> favourites=new ArrayList<>();
-  @OneToMany
-  private List<Address> ds=new ArrayList<>();
+  @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+   private  List<Address> addresses=new ArrayList<>();
+
 
 }
