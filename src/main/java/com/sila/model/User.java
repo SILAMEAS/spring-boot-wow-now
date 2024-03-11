@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -31,5 +32,7 @@ public class User {
   private List<Order> orders=new ArrayList<>();
   @ElementCollection
   private List<RestaurantDto> favourites=new ArrayList<>();
+  @OneToMany
+  private List<Address> ds=new ArrayList<>();
 
 }

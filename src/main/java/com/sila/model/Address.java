@@ -6,9 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Order {
+public class Address {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
-
+  private  Long id;
 }
