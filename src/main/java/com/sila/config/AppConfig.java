@@ -33,7 +33,7 @@ public class AppConfig {
                 throw new RuntimeException(e);
               }
             });
-        return null;
+        return http.build();
     }
 
     private CorsConfigurationSource corsConfigrationSource() {
