@@ -29,7 +29,7 @@ public class AuthController {
   private final JwtProvider jwtProvider;
   private final CustomerUserDetailsService customerUserDetailsService;
   private final CartRepository cartRepository;
-@PostMapping("/signup")
+  @PostMapping("/signup")
   public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user) throws Exception {
     User isEmailExist = userRepository.findByEmail(user.getEmail());
     if(isEmailExist!=null){
@@ -58,7 +58,21 @@ public class AuthController {
     authResponse.setRole(user.getRole());
     return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
   }
-//  @PostMapping("/login")
-//  public
+  @PostMapping("/login")
+  public ResponseEntity<AuthResponse> login(@RequestBody String email,@RequestBody String password) throws Exception{
+  User UserExist = userRepository.findByEmail(email);
+  if(UserExist==null){
+    throw new Exception("Email not found");
+  }
+    Authentication authentication=new UsernamePasswordAuthenticationToken(email,password);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    String jwt=jwtProvider.generateToken(authentication);
+    AuthResponse authResponse=new AuthResponse();
+    authResponse.setRole(UserExist.getRole());
+    authResponse.setMessage("Login is successfully");
+    authResponse.setJwt(jwt);
+    return new ResponseEntity<>(authResponse, HttpStatus.OK);
+
+  }
 
 }
