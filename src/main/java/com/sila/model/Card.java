@@ -17,7 +17,7 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne
-    private User user;
+    private User customer;
     private Long total;
     @OneToMany(mappedBy = "card",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<CardItem> item=new ArrayList<>();
