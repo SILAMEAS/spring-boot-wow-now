@@ -26,7 +26,8 @@ public class AppConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
         http.sessionManagement(management->management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(Authorize->Authorize.requestMatchers("/api/admin/**").hasAnyRole("RESTAURANT_OWNER","ADMIN").requestMatchers("/api/**").authenticated().anyRequest().permitAll()).addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class).csrf(csrf-> {
+                .authorizeHttpRequests(Authorize->Authorize.requestMatchers("/api/admin/**").hasAnyRole("RESTAURANT_OWNER","ADMIN").
+                    requestMatchers("/api/**").authenticated().anyRequest().permitAll()).addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class).csrf(csrf-> {
               try {
                 csrf.disable().cors(cors->cors.configurationSource(corsConfigrationSource()));
               } catch (Exception e) {
