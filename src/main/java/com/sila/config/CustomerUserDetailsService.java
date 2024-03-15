@@ -1,4 +1,4 @@
-package com.sila.service;
+package com.sila.config;
 
 import com.sila.model.USER_ROLE;
 import com.sila.model.User;

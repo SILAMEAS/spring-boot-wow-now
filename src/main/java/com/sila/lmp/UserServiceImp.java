@@ -1,14 +1,15 @@
-package com.sila.service;
+package com.sila.lmp;
 
 import com.sila.config.JwtProvider;
 import com.sila.model.User;
 import com.sila.repository.UserRepository;
+import com.sila.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImp implements UserService{
+public class UserServiceImp implements UserService {
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     @Override

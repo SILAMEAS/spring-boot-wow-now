@@ -7,7 +7,7 @@ import com.sila.repository.CartRepository;
 import com.sila.repository.UserRepository;
 import com.sila.request.LoginRequest;
 import com.sila.response.AuthResponse;
-import com.sila.service.CustomerUserDetailsService;
+import com.sila.config.CustomerUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
