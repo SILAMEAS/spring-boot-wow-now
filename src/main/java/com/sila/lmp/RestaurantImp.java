@@ -10,7 +10,11 @@ import com.sila.repository.UserRepository;
 import com.sila.request.CreateRestaurantReq;
 import com.sila.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +22,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Service@Slf4j
 public class RestaurantImp implements RestaurantService {
     private final RestaurantRepository restaurantRepository;
     private final AddressRepository addressRepository;
@@ -29,11 +34,13 @@ public class RestaurantImp implements RestaurantService {
         Restaurant restaurant=new Restaurant();
         restaurant.setAddress(address);
         restaurant.setName(req.getName());
-        restaurant.setContactInformation(req.getContactInformation());
         restaurant.setOpeningHours(req.getOpeningHours());
         restaurant.setDescription(req.getDescription());
         restaurant.setRegistrationDate(LocalDateTime.now());
         restaurant.setOwner(user);
+        restaurant.setCuisineType(req.getCuisineType());
+        restaurant.setContactInformation(req.getContactInformation());
+        restaurant.setImages(req.getImages());
         return restaurantRepository.save(restaurant);
     }
 
@@ -59,9 +66,6 @@ public class RestaurantImp implements RestaurantService {
     @Override
     public void deleteRestaurant(Long id) throws Exception {
         Restaurant isRestaurantExit= findRestaurantById(id);
-        if(isRestaurantExit==null){
-            throw new BadRequestException("this restaurant is don't have in our database");
-        }
         restaurantRepository.delete(isRestaurantExit);
     }
 
@@ -69,16 +73,16 @@ public class RestaurantImp implements RestaurantService {
     public List<Restaurant> getRestaurants() {
         return restaurantRepository.findAll();
     }
-//    @Override
-//    public List<Restaurant> searchRestaurant(String keyword) {
-//        return restaurantRepository.findBySearchQuery(keyword);
-//    }
+    @Override
+    public List<Restaurant> searchRestaurant(String keyword) {
+        return restaurantRepository.findBySearchQuery(keyword);
+    }
 
     @Override
     public Restaurant findRestaurantById(Long id) throws Exception {
         Optional<Restaurant> restaurantExit=restaurantRepository.findById(id);
         if(restaurantExit.isEmpty()){
-            throw new Exception("restaurant not found");
+            throw new BadRequestException("Restaurant id :"+id+" not found in database!");
         }
         return restaurantExit.get();
     }
@@ -100,9 +104,23 @@ public class RestaurantImp implements RestaurantService {
         dto.setDescription(findRestaurant.getDescription());
         dto.setId(findRestaurant.getId());
         dto.setImages(findRestaurant.getImages());
-        if(user.getFavourites().contains(dto)){
-            user.getFavourites().remove(dto);
-        }else user.getFavourites().add(dto);
+        dto.setName(findRestaurant.getName());
+        boolean isFavorite=false;
+        List<RestaurantDto> favorites=user.getFavourites();
+        for(RestaurantDto favorite:favorites){
+            if(favorite.getId().equals(restaurantId)){
+                isFavorite=true;
+                break;
+            }
+
+        }
+        if(isFavorite){
+            favorites.removeIf(fav->fav.getId().equals(restaurantId));
+            dto.setMessage("Restaurant was remove form favorite lists");
+        }else {
+            favorites.add(dto);
+            dto.setMessage("Restaurant was add to favorite lists");
+        }
         userRepository.save(user);
         return dto;
     }

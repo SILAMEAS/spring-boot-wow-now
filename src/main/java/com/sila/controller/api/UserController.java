@@ -1,4 +1,4 @@
-package com.sila.controller;
+package com.sila.controller.api;
 
 import com.sila.model.User;
 import com.sila.service.UserService;

@@ -1,14 +1,16 @@
-package com.sila.controller;
+package com.sila.controller.auth;
 import com.sila.config.JwtProvider;
 import com.sila.model.Card;
-import com.sila.model.USER_ROLE;
+import com.sila.utlis.enums.USER_ROLE;
 import com.sila.model.User;
-import com.sila.repository.CartRepository;
+import com.sila.repository.CardRepository;
 import com.sila.repository.UserRepository;
 import com.sila.request.LoginRequest;
 import com.sila.response.AuthResponse;
 import com.sila.config.CustomerUserDetailsService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -27,12 +29,13 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtProvider jwtProvider;
   private final CustomerUserDetailsService customerUserDetailsService;
-  private final CartRepository cartRepository;
+  private final CardRepository cartRepository;
   private Authentication authenticate(String email, String password) {
     UserDetails userDetails = customerUserDetailsService.loadUserByUsername(email);
     if(userDetails == null){
@@ -76,17 +79,22 @@ public class AuthController {
   public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest req) throws Exception{
     String email = req.getEmail();
     String password = req.getPassword();
-//  auth passing email and password to get authorization
-    Authentication authentication = authenticate(email,password);
-    Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-    String role = authorities.isEmpty()?null:authorities.iterator().next().getAuthority();
-    String jwt = jwtProvider.generateToken(authentication);
+try {
+  //  auth passing email and password to get authorization
+  Authentication authentication = authenticate(email,password);
+  Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+  String role = authorities.isEmpty()?null:authorities.iterator().next().getAuthority();
+  String jwt = jwtProvider.generateToken(authentication);
 //  Custom response data
-    AuthResponse authResponse = new AuthResponse();
-    authResponse.setJwt(jwt);
-    authResponse.setMessage("login successfully");
-    authResponse.setRole(USER_ROLE.valueOf(role));
-    return new ResponseEntity<>(authResponse, HttpStatus.OK);
+  AuthResponse authResponse = new AuthResponse();
+  authResponse.setJwt(jwt);
+  authResponse.setMessage("login successfully");
+  authResponse.setRole(USER_ROLE.valueOf(role));
+  return new ResponseEntity<>(authResponse, HttpStatus.OK);
+  }catch (Exception e){
+    throw new BadRequestException(email+" is not found. Please sign up new account with our application");
+  }
+
 
   }
 

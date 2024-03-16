@@ -1,4 +1,4 @@
-package com.sila.model;
+package com.sila.utlis.enums;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.OneToMany;

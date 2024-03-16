@@ -1,6 +1,6 @@
 package com.sila.response;
 
-import com.sila.model.USER_ROLE;
+import com.sila.utlis.enums.USER_ROLE;
 import lombok.Data;
 
 @Data

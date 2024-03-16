@@ -1,6 +1,6 @@
 package com.sila.config;
 
-import com.sila.model.USER_ROLE;
+import com.sila.utlis.enums.USER_ROLE;
 import com.sila.model.User;
 import com.sila.repository.UserRepository;
 import java.util.ArrayList;
