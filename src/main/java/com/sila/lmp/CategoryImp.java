@@ -41,4 +41,11 @@ public class CategoryImp implements CategoryService {
         }
         return categoryExit.get();
     }
+
+    @Override
+    public Void deleteCategoryById(Long category_id) throws Exception {
+        findCategoryById(category_id);
+        categoryRepository.deleteById(category_id);
+        return null;
+    }
 }

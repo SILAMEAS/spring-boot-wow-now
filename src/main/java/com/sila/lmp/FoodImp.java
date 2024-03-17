@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,7 +44,7 @@ public class FoodImp implements FoodService {
         Food foodByID = findFoodById(id);
         foodByID.setRestaurant(null);
         foodRepository.save(foodByID);
-        throw  new Exception("Food id "+id+" was remove from restaurant");
+        return null;
     }
 
     @Override
