@@ -3,7 +3,7 @@ package com.sila.service;
 import com.sila.dto.RestaurantDto;
 import com.sila.model.Restaurant;
 import com.sila.model.User;
-import com.sila.request.CreateRestaurantReq;
+import com.sila.dto.request.CreateRestaurantReq;
 
 import java.util.List;
 

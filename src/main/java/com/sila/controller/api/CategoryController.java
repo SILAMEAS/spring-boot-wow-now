@@ -3,7 +3,6 @@ package com.sila.controller.api;
 import com.sila.model.Category;
 import com.sila.model.Restaurant;
 import com.sila.model.User;
-import com.sila.request.CreateCategoryReq;
 import com.sila.service.CategoryService;
 import com.sila.service.RestaurantService;
 import com.sila.service.UserService;

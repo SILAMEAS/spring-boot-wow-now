@@ -4,13 +4,12 @@ import com.sila.model.Category;
 import com.sila.model.Food;
 import com.sila.model.Restaurant;
 import com.sila.repository.FoodRepository;
-import com.sila.request.CreateFoodReq;
+import com.sila.dto.request.CreateFoodReq;
 import com.sila.service.FoodService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;

@@ -2,8 +2,8 @@ package com.sila.controller.admin;
 
 import com.sila.model.IngredientCategory;
 import com.sila.model.IngredientsItem;
-import com.sila.request.CreateIngredientCategoryRequest;
-import com.sila.request.CreateIngredientItemRequest;
+import com.sila.dto.request.CreateIngredientCategoryRequest;
+import com.sila.dto.request.CreateIngredientItemRequest;
 import com.sila.service.IngredientCategoryService;
 import com.sila.service.IngredientItemService;
 import com.sila.service.UserService;

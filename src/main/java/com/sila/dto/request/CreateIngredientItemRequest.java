@@ -1,4 +1,4 @@
-package com.sila.request;
+package com.sila.dto.request;
 
 import lombok.Data;
 

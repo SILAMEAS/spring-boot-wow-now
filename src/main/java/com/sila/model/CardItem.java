@@ -16,6 +16,7 @@ public class CardItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private Long totalPrice;
     @ManyToOne
     @JsonIgnore
     private Card card;

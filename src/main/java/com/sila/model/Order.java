@@ -1,6 +1,7 @@
 package com.sila.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sila.utlis.enums.ORDER_STATUS;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

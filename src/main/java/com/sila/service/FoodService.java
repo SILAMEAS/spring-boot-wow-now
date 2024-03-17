@@ -3,7 +3,7 @@ package com.sila.service;
 import com.sila.model.Category;
 import com.sila.model.Food;
 import com.sila.model.Restaurant;
-import com.sila.request.CreateFoodReq;
+import com.sila.dto.request.CreateFoodReq;
 
 import java.util.List;
 

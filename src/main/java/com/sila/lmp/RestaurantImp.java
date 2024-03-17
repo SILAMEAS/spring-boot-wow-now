@@ -7,13 +7,11 @@ import com.sila.model.User;
 import com.sila.repository.AddressRepository;
 import com.sila.repository.RestaurantRepository;
 import com.sila.repository.UserRepository;
-import com.sila.request.CreateRestaurantReq;
+import com.sila.dto.request.CreateRestaurantReq;
 import com.sila.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

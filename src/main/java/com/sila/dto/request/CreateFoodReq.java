@@ -1,4 +1,4 @@
-package com.sila.request;
+package com.sila.dto.request;
 
 import com.sila.model.Category;
 import com.sila.model.IngredientsItem;

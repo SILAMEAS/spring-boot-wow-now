@@ -1,14 +1,20 @@
 package com.sila.lmp;
 
 import com.sila.model.Card;
+import com.sila.model.CardItem;
+import com.sila.model.Food;
+import com.sila.model.User;
 import com.sila.repository.CardItemRepository;
 import com.sila.repository.CardRepository;
-import com.sila.request.CreateItemToCardRequset;
+import com.sila.dto.request.CreateItemToCardRequset;
 import com.sila.service.CardService;
 import com.sila.service.FoodService;
 import com.sila.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,37 +25,83 @@ public class CardImp implements CardService {
     private final CardItemRepository cardItemRepository;
 
     @Override
-    public Card addItemToCard(CreateItemToCardRequset req, String jwt) throws Exception {
-        return null;
+    public CardItem addItemToCard(CreateItemToCardRequset req, String jwt) throws Exception {
+        User user =userService.findUserByJwtToken(jwt);
+        Food food=foodService.findFoodById(req.getFoodId());
+        Card card=cardRepository.findByCustomerId(user.getId());
+        for(CardItem item:card.getItem()){
+            if(item.getFood().equals(food)){
+                int newQty=item.getQuantity()+req.getQty();
+                return updateCardItemQty(item.getId(),newQty);
+
+
+            }
+        }
+        CardItem newCardItem=new CardItem();
+        newCardItem.setFood(food);
+        newCardItem.setCard(card);
+        newCardItem.setQuantity(req.getQty());
+        newCardItem.setIngredients(req.getIngredients());
+        newCardItem.setTotalPrice(req.getQty()*food.getPrice());
+        CardItem saveCardItem=cardItemRepository.save(newCardItem);
+        card.getItem().add(saveCardItem);
+        return saveCardItem;
     }
 
     @Override
-    public Card updateCardItemQty(Long cardId, int qty) throws Exception {
-        return null;
+    public CardItem updateCardItemQty(Long card_item_id, int qty) throws Exception {
+        Optional<CardItem> cardItems = cardItemRepository.findById(card_item_id);
+        if(cardItems.isEmpty()){
+            throw new BadRequestException("Card item is not found");
+        }
+        CardItem cardItemUpdated=cardItems.get();
+        cardItemUpdated.setQuantity(qty);
+        cardItemUpdated.setTotalPrice(cardItems.get().getFood().getPrice()*qty);
+        return cardItemRepository.save(cardItemUpdated);
     }
 
     @Override
-    public Card removeItemFromCard(Long cardId, String jwt) throws Exception {
-        return null;
+    public Card removeItemFromCard(Long cardItemId, String jwt) throws Exception {
+        User user=userService.findUserByJwtToken(jwt);
+        Card card=cardRepository.findByCustomerId(user.getId());
+        Optional<CardItem> cardItem=cardItemRepository.findById(cardItemId);
+        if(cardItem.isEmpty()){
+            throw new BadRequestException("Card Item id: "+cardItem+" is not found");
+        }
+        card.getItem().remove(cardItem.get());
+        return cardRepository.save(card);
     }
 
     @Override
     public Long calculateCardTotal(Card card) throws Exception {
-        return null;
+        Long total=0L;
+        for (CardItem itemOfCard:card.getItem()){
+            total+=itemOfCard.getTotalPrice();
+        }
+        return total;
     }
 
     @Override
     public Card findCardById(Long cardId) throws Exception {
-        return null;
+        Optional<Card> foundCard=cardRepository.findById(cardId);
+        if(foundCard.isEmpty()){
+            throw new BadRequestException("Card  id: "+cardId+" is not found");
+        }
+        return foundCard.get();
     }
 
     @Override
     public Card findCardByUserId(Long userId) throws Exception {
-        return null;
+        Card card =cardRepository.findByCustomerId(userId);
+        card.setTotal(calculateCardTotal(card));
+        return  card;
     }
 
     @Override
-    public Card clearCard(Long userId) throws Exception {
-        return null;
+    public Card clearCard(String jwt) throws Exception {
+        User user=userService.findUserByJwtToken(jwt);
+        Card userClearCard=findCardByUserId(user.getId());
+        userClearCard.getItem().clear();
+        return cardRepository.save(userClearCard);
     }
 }
