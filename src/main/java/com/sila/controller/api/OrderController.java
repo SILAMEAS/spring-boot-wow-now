@@ -27,7 +27,7 @@ public class OrderController {
     @GetMapping("/user")
     public ResponseEntity<List<Order>> listHistoryOrderByUser(@RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserByJwtToken(jwt);
-        List<Order> listOrderByUserId= orderService.getUserOrder(user.getId());
-        return new ResponseEntity<>(listOrderByUserId, HttpStatus.CREATED);
+        List<Order> listOrderByUserId = orderService.getUserOrder(user.getId());
+        return new ResponseEntity<>(listOrderByUserId, HttpStatus.OK);
     }
 }

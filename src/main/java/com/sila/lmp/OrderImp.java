@@ -30,7 +30,7 @@ public class OrderImp implements OrderService {
     private final CardService cardService;
     @Override
     public Order createOrder(CreateOrderReq req, User user) throws Exception {
-        Address newOrderAddress=req.getDeliveryAddress();
+        Address newOrderAddress = req.getDeliveryAddress();
         Address saveAddress=addressRepository.save(newOrderAddress);
         if(!user.getAddresses().contains(saveAddress)){
             user.getAddresses().add(saveAddress);

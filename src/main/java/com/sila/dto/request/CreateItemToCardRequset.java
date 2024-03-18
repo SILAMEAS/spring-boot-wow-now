@@ -9,5 +9,6 @@ public class CreateItemToCardRequset {
     private Long foodId;
     private Integer qty;
     private List<String> ingredients;
+    private Long restaurantId;
 
 }

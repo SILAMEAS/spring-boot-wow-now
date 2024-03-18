@@ -3,12 +3,14 @@ package com.sila.lmp;
 import com.sila.model.Card;
 import com.sila.model.CardItem;
 import com.sila.model.Food;
+import com.sila.model.Restaurant;
 import com.sila.model.User;
 import com.sila.repository.CardItemRepository;
 import com.sila.repository.CardRepository;
 import com.sila.dto.request.CreateItemToCardRequset;
 import com.sila.service.CardService;
 import com.sila.service.FoodService;
+import com.sila.service.RestaurantService;
 import com.sila.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
@@ -23,10 +25,17 @@ public class CardImp implements CardService {
     private final FoodService foodService;
     private final UserService userService;
     private final CardItemRepository cardItemRepository;
+    private final RestaurantService restaurantService;
 
     @Override
     public CardItem addItemToCard(CreateItemToCardRequset req, String jwt) throws Exception {
         User user =userService.findUserByJwtToken(jwt);
+        Restaurant restaurant = restaurantService.findRestaurantById(req.getRestaurantId());
+        for(Food f: restaurant.getFoods()){
+            if(!f.getId().equals(req.getFoodId())){
+                throw new BadRequestException("Food Id : "+req.getFoodId()+" not have in restaurant id :"+req.getRestaurantId());
+            }
+        }
         Food food=foodService.findFoodById(req.getFoodId());
         Card card=cardRepository.findByCustomerId(user.getId());
         for(CardItem item:card.getItem()){

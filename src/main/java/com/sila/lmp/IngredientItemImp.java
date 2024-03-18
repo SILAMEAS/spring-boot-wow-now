@@ -1,22 +1,18 @@
 package com.sila.lmp;
 
-import com.sila.model.Category;
 import com.sila.model.IngredientCategory;
 import com.sila.model.IngredientsItem;
 import com.sila.model.Restaurant;
 import com.sila.repository.IngredientItemRepository;
-import com.sila.repository.RestaurantRepository;
 import com.sila.service.CategoryService;
 import com.sila.service.IngredientCategoryService;
 import com.sila.service.IngredientItemService;
 import com.sila.service.RestaurantService;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

@@ -12,10 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    @GetMapping("/test")
-    public ResponseEntity<String> hello(){
-        return new ResponseEntity<>("test",HttpStatus.OK);
-    }
     @GetMapping("/profile")
     public ResponseEntity<User> getUserByJwtToken(@RequestHeader("Authorization") String jwt) throws Exception {
         User user=userService.findUserByJwtToken(jwt);
