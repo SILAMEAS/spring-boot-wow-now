@@ -1,4 +1,4 @@
-package com.sila.lmp;
+package com.sila.service.lmp;
 
 import com.sila.model.Category;
 import com.sila.model.Food;

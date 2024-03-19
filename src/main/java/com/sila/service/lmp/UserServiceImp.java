@@ -1,4 +1,4 @@
-package com.sila.lmp;
+package com.sila.service.lmp;
 
 import com.sila.config.JwtProvider;
 import com.sila.model.User;

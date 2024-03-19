@@ -1,5 +1,6 @@
 package com.sila.config;
 
+import com.sila.exception.NotFoundException;
 import com.sila.utlis.enums.USER_ROLE;
 import com.sila.model.User;
 import com.sila.repository.UserRepository;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Service;
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
     User user = userRepository.findByEmail(email);
     if(user==null) {
-      throw  new UsernameNotFoundException("user not found with email " + email);
+      throw new NotFoundException("invalid email");
     }
     USER_ROLE role= user.getRole();
     if(role==null)role=USER_ROLE.ROLE_CUSTOMER;

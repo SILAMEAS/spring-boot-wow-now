@@ -35,7 +35,7 @@ public class AdminRestaurantController {
         Restaurant userAlreadyHaveRestaurant = restaurantRepository.findByOwnerId(findUser.getId());
 //        User already have restaurant
         if(!Objects.isNull(userAlreadyHaveRestaurant)){
-            throw new BadRequestException("User already have restaurant");
+            throw new com.sila.exception.BadRequestException("User already have restaurant");
         }
         try {
             Restaurant restaurant= restaurantService.createRestaurant(req,findUser);

@@ -1,5 +1,6 @@
 package com.sila.controller.auth;
 import com.sila.config.JwtProvider;
+import com.sila.exception.NotFoundException;
 import com.sila.model.Card;
 import com.sila.utlis.enums.USER_ROLE;
 import com.sila.model.User;
@@ -39,10 +40,10 @@ public class AuthController {
   private Authentication authenticate(String email, String password) {
     UserDetails userDetails = customerUserDetailsService.loadUserByUsername(email);
     if(userDetails == null){
-      throw new BadCredentialsException("Invalid username or email ...");
+      throw new NotFoundException("Invalid username or email ...");
     }
     if(!passwordEncoder.matches(password,userDetails.getPassword())){
-      throw new BadCredentialsException("Invalid password ...");
+      throw new NotFoundException("Invalid password ...");
     }
     return  new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
   }
@@ -79,22 +80,17 @@ public class AuthController {
   public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest req) throws Exception{
     String email = req.getEmail();
     String password = req.getPassword();
-try {
-  //  auth passing email and password to get authorization
-  Authentication authentication = authenticate(email,password);
-  Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-  String role = authorities.isEmpty()?null:authorities.iterator().next().getAuthority();
-  String jwt = jwtProvider.generateToken(authentication);
+    //  auth passing email and password to get authorization
+    Authentication authentication = authenticate(email,password);
+    Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+    String role = authorities.isEmpty()?null:authorities.iterator().next().getAuthority();
+    String jwt = jwtProvider.generateToken(authentication);
 //  Custom response data
-  AuthResponse authResponse = new AuthResponse();
-  authResponse.setJwt(jwt);
-  authResponse.setMessage("login successfully");
-  authResponse.setRole(USER_ROLE.valueOf(role));
-  return new ResponseEntity<>(authResponse, HttpStatus.OK);
-  }catch (Exception e){
-    throw new BadRequestException(email+" is not found. Please sign up new account with our application");
-  }
-
+    AuthResponse authResponse = new AuthResponse();
+    authResponse.setJwt(jwt);
+    authResponse.setMessage("login successfully");
+    authResponse.setRole(USER_ROLE.valueOf(role));
+    return new ResponseEntity<>(authResponse, HttpStatus.OK);
 
   }
 
