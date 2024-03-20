@@ -1,6 +1,7 @@
 package com.sila.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ public class Address {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private  Long id;
+  @NotEmpty(message ="streetAddress can't empty" )
   private String streetAddress;
   private String city;
   private String stateProvince;

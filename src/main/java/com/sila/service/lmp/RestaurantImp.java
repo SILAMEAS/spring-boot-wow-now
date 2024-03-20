@@ -1,6 +1,7 @@
 package com.sila.service.lmp;
 
 import com.sila.dto.RestaurantDto;
+import com.sila.exception.BadRequestException;
 import com.sila.model.Address;
 import com.sila.model.Restaurant;
 import com.sila.model.User;
@@ -11,7 +12,6 @@ import com.sila.dto.request.CreateRestaurantReq;
 import com.sila.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -80,7 +80,7 @@ public class RestaurantImp implements RestaurantService {
     public Restaurant findRestaurantById(Long id) throws Exception {
         Optional<Restaurant> restaurantExit=restaurantRepository.findById(id);
         if(restaurantExit.isEmpty()){
-            throw new BadRequestException("Restaurant id :"+id+" not found in database!");
+            throw new BadRequestException("RestaurantId : "+id+" not found in database!");
         }
         return restaurantExit.get();
     }
@@ -89,7 +89,7 @@ public class RestaurantImp implements RestaurantService {
     public Restaurant getRestaurantByUserId(Long userId) throws Exception {
         Restaurant restaurantOfUser = restaurantRepository.findByOwnerId(userId);
         if(restaurantOfUser==null){
-            throw new Exception("this user "+userId+" don't have restaurant");
+            throw new BadRequestException("this user don't have restaurant");
         }
 
         return restaurantOfUser;

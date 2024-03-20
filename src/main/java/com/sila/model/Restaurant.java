@@ -2,6 +2,7 @@ package com.sila.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ public class Restaurant {
     private Long id;
     @OneToOne
     private User owner;
+    @NotEmpty(message ="name can't be empty")
     private String name;
     private String description;
     private String cuisineType;

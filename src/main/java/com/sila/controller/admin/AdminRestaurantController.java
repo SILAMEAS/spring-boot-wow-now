@@ -7,6 +7,7 @@ import com.sila.dto.request.CreateRestaurantReq;
 import com.sila.dto.response.MessageResponse;
 import com.sila.service.RestaurantService;
 import com.sila.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
@@ -30,7 +31,7 @@ public class AdminRestaurantController {
         return new ResponseEntity<>("Can access to /api/admin/restaurant/get",HttpStatus.OK);
     }
     @PostMapping()
-    public ResponseEntity<Restaurant> createRestaurant(@RequestBody CreateRestaurantReq req, @RequestHeader("Authorization") String jwt) throws Exception {
+    public ResponseEntity<Restaurant> createRestaurant(@Valid @RequestBody CreateRestaurantReq req, @RequestHeader("Authorization") String jwt) throws Exception {
         User findUser = userService.findUserByJwtToken(jwt);
         Restaurant userAlreadyHaveRestaurant = restaurantRepository.findByOwnerId(findUser.getId());
 //        User already have restaurant
@@ -60,18 +61,14 @@ public class AdminRestaurantController {
     public ResponseEntity<MessageResponse> deleteRestaurant(@RequestHeader("Authorization") String jwt,@PathVariable Long id) throws Exception {
         userService.findUserByJwtToken(jwt);
         MessageResponse messageResponse=new MessageResponse();
-        try{
-            restaurantService.deleteRestaurant(id);
-            messageResponse.setMessage("delete restaurant id : "+id+" successfully!");
-        }catch (Exception e){
-            messageResponse.setMessage(e.getMessage());
-        }
+        restaurantService.deleteRestaurant(id);
+        messageResponse.setMessage("delete restaurant id : "+id+" successfully!");
         return new ResponseEntity<>(messageResponse, HttpStatus.OK);
     }
 
     @PutMapping("/{id}/status")
     public ResponseEntity<MessageResponse> updateRestaurantStatus(@RequestHeader("Authorization") String jwt,@PathVariable Long id) throws Exception {
-        User findUser = userService.findUserByJwtToken(jwt);
+        userService.findUserByJwtToken(jwt);
         Restaurant restaurant= restaurantService.updateRestaurantStatus(id);
         MessageResponse messageResponse=new MessageResponse();
         if(restaurant.isOpen()){
