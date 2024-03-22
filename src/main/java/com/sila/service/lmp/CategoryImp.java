@@ -1,5 +1,6 @@
 package com.sila.service.lmp;
 
+import com.sila.exception.BadRequestException;
 import com.sila.model.Category;
 import com.sila.model.Restaurant;
 import com.sila.repository.CategoryRepository;
@@ -7,7 +8,6 @@ import com.sila.repository.RestaurantRepository;
 import com.sila.repository.UserRepository;
 import com.sila.service.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class CategoryImp implements CategoryService {
     public Category findCategoryById(Long category_id) throws Exception {
         Optional<Category> categoryExit= categoryRepository.findById(category_id);
         if(categoryExit.isEmpty()){
-            throw new Exception("Category id: "+category_id+" not found in database");
+            throw new BadRequestException("Category id: "+category_id+" not found in database");
         }
         return categoryExit.get();
     }

@@ -1,5 +1,6 @@
 package com.sila.controller.auth;
 import com.sila.config.JwtProvider;
+import com.sila.exception.BadRequestException;
 import com.sila.exception.NotFoundException;
 import com.sila.model.Card;
 import com.sila.utlis.enums.USER_ROLE;
@@ -11,7 +12,6 @@ import com.sila.dto.response.AuthResponse;
 import com.sila.config.CustomerUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -51,7 +51,7 @@ public class AuthController {
   public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user) throws Exception {
     User isEmailExist = userRepository.findByEmail(user.getEmail());
     if(isEmailExist != null){
-      throw new Exception("Email is already used ");
+      throw new BadRequestException("Email is already used ");
     }
   //    Create New User
     User createUser = new User();

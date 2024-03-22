@@ -1,6 +1,7 @@
 package com.sila.service.lmp;
 
 import com.sila.config.JwtProvider;
+import com.sila.exception.BadRequestException;
 import com.sila.model.User;
 import com.sila.repository.UserRepository;
 import com.sila.service.UserService;
@@ -22,7 +23,7 @@ public class UserServiceImp implements UserService {
     public User findUserByEmail(String email) throws Exception {
         User foundUser=userRepository.findByEmail(email);;
         if(foundUser==null){
-            throw new Exception("User not found");
+            throw new BadRequestException("User not found");
         }
         return foundUser;
     }
