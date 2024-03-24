@@ -3,6 +3,8 @@ package com.sila.dto.response;
 import com.sila.model.Address;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class RestaurantResponse {
     private Long id;
@@ -12,4 +14,5 @@ public class RestaurantResponse {
     private Boolean open;
     private String description;
     private String openingHours;
+    private List<String> images;
 }

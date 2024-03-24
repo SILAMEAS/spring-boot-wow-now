@@ -82,6 +82,7 @@ public class RestaurantImp implements RestaurantService {
             temp.setAddress(restaurant.getAddress().getStreetAddress()+", "+restaurant.getAddress().getCity()+", "+restaurant.getAddress().getCountry());
             temp.setOpen(restaurant.isOpen());
             temp.setDescription(restaurant.getDescription());
+            temp.setImages(restaurant.getImages());
             temp.setName(restaurant.getName());
             temp.setId(restaurant.getId());
             temp.setOpeningHours(restaurant.getOpeningHours());
