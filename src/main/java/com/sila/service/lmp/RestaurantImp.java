@@ -87,11 +87,7 @@ public class RestaurantImp implements RestaurantService {
             temp.setId(restaurant.getId());
             temp.setOpeningHours(restaurant.getOpeningHours());
             for(RestaurantDto fav:favoriteByUser){
-                if(fav.getId().equals(restaurant.getId())){
-                    temp.setFavorite(true);
-                }else {
-                    temp.setFavorite(false);
-                }
+                temp.setFavorite(fav.getId().equals(restaurant.getId()));
             }
             listRestaurantResponses.add(temp);
         }
