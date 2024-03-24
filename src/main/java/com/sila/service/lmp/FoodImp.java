@@ -1,20 +1,22 @@
 package com.sila.service.lmp;
 
+import com.sila.dto.request.CreateFoodReq;
+import com.sila.dto.response.FoodResponse;
 import com.sila.model.Category;
 import com.sila.model.Food;
 import com.sila.model.Restaurant;
 import com.sila.repository.FoodRepository;
-import com.sila.dto.request.CreateFoodReq;
 import com.sila.service.FoodService;
+import com.sila.utlis.enums.EnumSort;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.CompletionException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -89,5 +91,26 @@ public class FoodImp implements FoodService {
         Food updateFood = findFoodById(id);
         updateFood.setAvailable(!updateFood.isAvailable());
         return foodRepository.save(updateFood);
+    }
+
+    @Override
+    public List<Food> getAllFood(Integer pageNo, Integer pageSize, String sortBy, EnumSort sortOrder) {
+        Pageable paging = PageRequest.of(pageNo, pageSize,
+                sortOrder==EnumSort.asc ?
+                Sort.by(sortBy.isEmpty()?"name":sortBy).ascending():
+                        Sort.by(sortBy.isEmpty()?"name":sortBy).descending());
+
+        Page<Food> pagedResult = foodRepository.findAll(paging);
+
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<Food>();
+        }
+    }
+
+    @Override
+    public Food updateFoodById(Long foodId,CreateFoodReq req) throws Exception {
+        return null;
     }
 }
