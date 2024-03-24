@@ -1,6 +1,7 @@
 package com.sila.service.lmp;
 
 import com.sila.dto.RestaurantDto;
+import com.sila.dto.response.RestaurantResponse;
 import com.sila.exception.BadRequestException;
 import com.sila.model.Address;
 import com.sila.model.Restaurant;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -68,8 +70,21 @@ public class RestaurantImp implements RestaurantService {
     }
 
     @Override
-    public List<Restaurant> getRestaurants() {
-        return restaurantRepository.findAll();
+    public List<RestaurantResponse> getRestaurants() {
+        List<RestaurantResponse> listRestaurantResponses=new ArrayList<>();
+        List<Restaurant> restaurantList=restaurantRepository.findAll();
+        for(Restaurant restaurant:restaurantList){
+            RestaurantResponse temp=new RestaurantResponse();
+            temp.setFavorite(false);
+            temp.setAddress(restaurant.getAddress().getStreetAddress()+", "+restaurant.getAddress().getCity()+", "+restaurant.getAddress().getCountry());
+            temp.setOpen(restaurant.isOpen());
+            temp.setDescription(restaurant.getDescription());
+            temp.setName(restaurant.getName());
+            temp.setId(restaurant.getId());
+            temp.setOpeningHours(restaurant.getOpeningHours());
+            listRestaurantResponses.add(temp);
+        }
+        return listRestaurantResponses;
     }
     @Override
     public List<Restaurant> searchRestaurant(String keyword) {

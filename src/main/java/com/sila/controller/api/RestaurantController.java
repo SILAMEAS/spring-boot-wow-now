@@ -1,6 +1,7 @@
 package com.sila.controller.api;
 
 import com.sila.dto.RestaurantDto;
+import com.sila.dto.response.RestaurantResponse;
 import com.sila.exception.BadRequestException;
 import com.sila.model.Restaurant;
 import com.sila.model.User;
@@ -20,10 +21,9 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
     private final UserService userService;
     @GetMapping()
-    public ResponseEntity< List<Restaurant>> getAllRestaurant(@RequestHeader("Authorization") String jwt) throws Exception {
-        userService.findUserByJwtToken(jwt);
-        List<Restaurant> searchRestaurant= restaurantService.getRestaurants();
-        return new ResponseEntity<>(searchRestaurant, HttpStatus.OK);
+    public ResponseEntity< List<RestaurantResponse>> getAllRestaurant(@RequestHeader("Authorization") String jwt) throws Exception {
+        User user=userService.findUserByJwtToken(jwt);
+        return new ResponseEntity<>(restaurantService.getRestaurants(), HttpStatus.OK);
     }
     @GetMapping("/search/{keyword}")
     public ResponseEntity< List<Restaurant>> searchRestaurantByKeyword(@RequestHeader("Authorization") String jwt, @PathVariable String keyword) throws Exception {
