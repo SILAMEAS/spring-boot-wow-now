@@ -70,18 +70,24 @@ public class RestaurantImp implements RestaurantService {
     }
 
     @Override
-    public List<RestaurantResponse> getRestaurants() {
+    public List<RestaurantResponse> getRestaurants(List<RestaurantDto> favoriteByUser) {
         List<RestaurantResponse> listRestaurantResponses=new ArrayList<>();
         List<Restaurant> restaurantList=restaurantRepository.findAll();
         for(Restaurant restaurant:restaurantList){
             RestaurantResponse temp=new RestaurantResponse();
-            temp.setFavorite(false);
             temp.setAddress(restaurant.getAddress().getStreetAddress()+", "+restaurant.getAddress().getCity()+", "+restaurant.getAddress().getCountry());
             temp.setOpen(restaurant.isOpen());
             temp.setDescription(restaurant.getDescription());
             temp.setName(restaurant.getName());
             temp.setId(restaurant.getId());
             temp.setOpeningHours(restaurant.getOpeningHours());
+            for(RestaurantDto fav:favoriteByUser){
+                if(fav.getId().equals(restaurant.getId())){
+                    temp.setFavorite(true);
+                }else {
+                    temp.setFavorite(false);
+                }
+            }
             listRestaurantResponses.add(temp);
         }
         return listRestaurantResponses;

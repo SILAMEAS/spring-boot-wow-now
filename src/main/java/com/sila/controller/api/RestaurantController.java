@@ -23,7 +23,7 @@ public class RestaurantController {
     @GetMapping()
     public ResponseEntity< List<RestaurantResponse>> getAllRestaurant(@RequestHeader("Authorization") String jwt) throws Exception {
         User user=userService.findUserByJwtToken(jwt);
-        return new ResponseEntity<>(restaurantService.getRestaurants(), HttpStatus.OK);
+        return new ResponseEntity<>(restaurantService.getRestaurants(user.getFavourites()), HttpStatus.OK);
     }
     @GetMapping("/search/{keyword}")
     public ResponseEntity< List<Restaurant>> searchRestaurantByKeyword(@RequestHeader("Authorization") String jwt, @PathVariable String keyword) throws Exception {
