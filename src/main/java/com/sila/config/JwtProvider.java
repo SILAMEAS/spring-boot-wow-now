@@ -15,10 +15,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class JwtProvider {
    private final SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
+
    public String generateToken(Authentication auth){
      Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
      String roles = populateAuthorities(authorities);
-     return Jwts.builder().setIssuer(String.valueOf(new Date())).setExpiration((new Date(new Date().getTime()+86400000)))
+     return Jwts.builder().setIssuer(String.valueOf(new Date())).setExpiration((new Date(new Date().getTime() + 86400000)))
          .claim("email",auth.getName()).claim("authorities",roles).signWith(key).compact();
    }
    public String getEmailFromJwtToken(String jwt){

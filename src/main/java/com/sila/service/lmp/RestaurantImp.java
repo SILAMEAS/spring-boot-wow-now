@@ -1,6 +1,7 @@
 package com.sila.service.lmp;
 
 import com.sila.dto.RestaurantDto;
+import com.sila.dto.request.CreateRestaurantReq;
 import com.sila.dto.response.RestaurantResponse;
 import com.sila.exception.BadRequestException;
 import com.sila.model.Address;
@@ -9,7 +10,6 @@ import com.sila.model.User;
 import com.sila.repository.AddressRepository;
 import com.sila.repository.RestaurantRepository;
 import com.sila.repository.UserRepository;
-import com.sila.dto.request.CreateRestaurantReq;
 import com.sila.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -86,12 +86,19 @@ public class RestaurantImp implements RestaurantService {
             temp.setName(restaurant.getName());
             temp.setId(restaurant.getId());
             temp.setOpeningHours(restaurant.getOpeningHours());
-            for(RestaurantDto fav:favoriteByUser){
-                temp.setFavorite(fav.getId().equals(restaurant.getId()));
-            }
+            temp.setFavorite(findFavorite(restaurant.getId(),favoriteByUser));
             listRestaurantResponses.add(temp);
         }
         return listRestaurantResponses;
+    }
+    public boolean findFavorite(
+            Long id, List<RestaurantDto> fav) {
+        for (RestaurantDto temp : fav) {
+            if (temp.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
     }
     @Override
     public List<Restaurant> searchRestaurant(String keyword) {

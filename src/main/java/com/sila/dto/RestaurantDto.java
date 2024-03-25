@@ -1,8 +1,10 @@
 package com.sila.dto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import java.util.List;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Embeddable
@@ -13,7 +15,4 @@ private List<String> images;
 private String description;
 private Long id;
 private String message;
-
-
-
 }
