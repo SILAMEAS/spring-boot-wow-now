@@ -11,8 +11,13 @@ import com.sila.repository.AddressRepository;
 import com.sila.repository.RestaurantRepository;
 import com.sila.repository.UserRepository;
 import com.sila.service.RestaurantService;
+import com.sila.utlis.enums.EnumSort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -158,5 +163,15 @@ public class RestaurantImp implements RestaurantService {
         findRestaurant.setOpen(!findRestaurant.isOpen());
        restaurantRepository.save(findRestaurant);
        return restaurantRepository.save(findRestaurant);
+    }
+
+    @Override
+    public Page<Restaurant> getPaginationRestaurants(Integer pageNo, Integer pageSize, String sortBy, EnumSort sortOder) {
+        Pageable paging = PageRequest.of(pageNo-1, pageSize,
+                sortOder == EnumSort.asc ?
+                        Sort.by(sortBy.isEmpty() ? "name" : sortBy).ascending() :
+                        Sort.by(sortBy.isEmpty() ? "name" : sortBy).descending());
+
+        return restaurantRepository.findAll(paging);
     }
 }

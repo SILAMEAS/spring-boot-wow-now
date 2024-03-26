@@ -71,4 +71,5 @@ public class FoodController {
         EnumSort.valueOf(sortOrder)).map(fuck -> this.modelMapper.map(fuck, FoodDto.class));
     return new ResponseEntity<>(new EntityResponseHandler<>(foods), HttpStatus.OK);
   }
+
 }

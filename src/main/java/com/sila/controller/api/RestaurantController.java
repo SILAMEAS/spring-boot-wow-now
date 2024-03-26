@@ -1,13 +1,19 @@
 package com.sila.controller.api;
 
+import com.sila.dto.PaginationRestaurantDto;
 import com.sila.dto.RestaurantDto;
+import com.sila.dto.mapper.FoodDto;
+import com.sila.dto.pagination.EntityResponseHandler;
 import com.sila.dto.response.RestaurantResponse;
 import com.sila.exception.BadRequestException;
 import com.sila.model.Restaurant;
 import com.sila.model.User;
 import com.sila.service.RestaurantService;
 import com.sila.service.UserService;
+import com.sila.utlis.enums.EnumSort;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +26,22 @@ import java.util.List;
 public class RestaurantController {
     private final RestaurantService restaurantService;
     private final UserService userService;
+    private final ModelMapper modelMapper;
     @GetMapping()
     public ResponseEntity< List<RestaurantResponse>> getAllRestaurant(@RequestHeader("Authorization") String jwt) throws Exception {
         User user=userService.findUserByJwtToken(jwt);
         return new ResponseEntity<>(restaurantService.getRestaurants(user.getFavourites()), HttpStatus.OK);
+    }
+    @GetMapping("/pagination")
+    public ResponseEntity<EntityResponseHandler<PaginationRestaurantDto>> listFoodAll(
+            @RequestHeader("Authorization") String jwt, @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortOrder) throws Exception {
+        userService.findUserByJwtToken(jwt);
+        Page<PaginationRestaurantDto> paginationRestaurantDto= restaurantService.getPaginationRestaurants(pageNo, pageSize, sortBy,
+                EnumSort.valueOf(sortOrder)).map(fuck -> this.modelMapper.map(fuck, PaginationRestaurantDto.class));
+        return new ResponseEntity<>(new EntityResponseHandler<>(paginationRestaurantDto), HttpStatus.OK);
     }
     @GetMapping("/search/{keyword}")
     public ResponseEntity< List<Restaurant>> searchRestaurantByKeyword(@RequestHeader("Authorization") String jwt, @PathVariable String keyword) throws Exception {

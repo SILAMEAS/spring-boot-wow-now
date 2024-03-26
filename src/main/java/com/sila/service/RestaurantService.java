@@ -2,9 +2,12 @@ package com.sila.service;
 
 import com.sila.dto.RestaurantDto;
 import com.sila.dto.response.RestaurantResponse;
+import com.sila.model.Food;
 import com.sila.model.Restaurant;
 import com.sila.model.User;
 import com.sila.dto.request.CreateRestaurantReq;
+import com.sila.utlis.enums.EnumSort;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -18,4 +21,5 @@ public interface RestaurantService {
     public Restaurant getRestaurantByUserId(Long userId) throws Exception;
     public RestaurantDto addRestaurantToFavorites(Long restaurantId,User user)throws Exception;
     public Restaurant updateRestaurantStatus(Long restaurantId)throws Exception;
+    public Page<Restaurant>  getPaginationRestaurants(Integer pageNo, Integer pageSize, String sortBy, EnumSort sortOder);
 }
