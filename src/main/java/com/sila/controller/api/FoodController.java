@@ -1,7 +1,7 @@
 package com.sila.controller.api;
 
-import com.sila.dto.EntityResponseHandler;
-import com.sila.dto.FoodDto;
+import com.sila.dto.pagination.EntityResponseHandler;
+import com.sila.dto.mapper.FoodDto;
 import com.sila.exception.BadRequestException;
 import com.sila.model.Food;
 import com.sila.service.FoodService;

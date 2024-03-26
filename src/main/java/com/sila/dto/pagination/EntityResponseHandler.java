@@ -1,4 +1,4 @@
-package com.sila.dto;
+package com.sila.dto.pagination;
 
 import java.util.ArrayList;
 import java.util.List;

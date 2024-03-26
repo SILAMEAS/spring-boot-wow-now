@@ -1,4 +1,4 @@
-package com.sila.dto;
+package com.sila.dto.mapper;
 
 import jakarta.validation.constraints.NotEmpty;
 import java.io.Serializable;

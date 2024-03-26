@@ -1,7 +1,5 @@
 package com.sila.service;
 
-import com.sila.dto.EntityResponseHandler;
-import com.sila.dto.FoodDto;
 import com.sila.model.Category;
 import com.sila.model.Food;
 import com.sila.model.Restaurant;

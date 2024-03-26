@@ -1,6 +1,5 @@
 package com.sila.service.lmp;
 
-import com.sila.dto.FoodDto;
 import com.sila.dto.request.CreateFoodReq;
 import com.sila.model.Category;
 import com.sila.model.Food;
@@ -107,7 +106,7 @@ public class FoodImp implements FoodService {
   @Override
   public Page<Food> getAllFood(Integer pageNo, Integer pageSize, String sortBy,
       EnumSort sortOrder) {
-    Pageable paging = PageRequest.of(pageNo, pageSize,
+    Pageable paging = PageRequest.of(pageNo-1, pageSize,
         sortOrder == EnumSort.asc ?
             Sort.by(sortBy.isEmpty() ? "name" : sortBy).ascending() :
             Sort.by(sortBy.isEmpty() ? "name" : sortBy).descending());
