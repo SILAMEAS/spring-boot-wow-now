@@ -21,5 +21,9 @@ public class PaginationRestaurantDto implements Serializable {
     private String description;
     @NotEmpty
     private List<String> images;
+    @NotEmpty
+    private String openingHours;
+    @NotEmpty
+    private boolean open;
 
 }
